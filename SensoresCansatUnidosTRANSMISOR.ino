@@ -48,6 +48,7 @@ void setup(void) {
     while (1);
   }//if status
  Serial.println ( F ( "Ha iniciado el sistema" ) );  //termina de iniciar todos los sistemas
+ 
 }//setup fin
 
 void loop(void) {
@@ -65,9 +66,10 @@ void loop(void) {
   
   tiempoActual = millis ( );  //funcion para saber cuanto tiempo transcurrido paso en el lop 
   gpss.lec();//se ejecuta cada 100 milisegundos.
-  tarea1();
+   tarea1();
   // ACOMODO DATOS BMP280
   temperatura=bme.readTemperature();//dato TEMPERATURA
+  Serial.println(temperatura);
   presion=bme.readPressure()/ 100.0F; //dato PRESION ATMOSFERICA
   altitud=bme.readAltitude(SEALEVELPRESSURE_HPA);//dato ALTITUD
   humedad=bme.readHumidity();//dato HUMEDAD
@@ -82,9 +84,10 @@ void loop(void) {
   
     char buf[VW_MAX_MESSAGE_LEN]; // Cadena para enviar
     String str=""; 
+    
    //ENVIO DATO DE LATITUD
-    str="l"+String (latitud,5); //convertimos el entero a String y agramos un inicio de trama
-    Serial.println(str);
+    str="l"+String (latitud,5); //convertimos el entero a String y agremos un inicio de trama
+    Serial.println(str); 
     str.toCharArray(buf,sizeof(buf)); //convertimos el String en un array
     vw_send((uint8_t *)buf, strlen(buf)); //Enviamos el array
     vw_wait_tx(); //Esperamos hasta que el mensaje se envie
@@ -98,6 +101,7 @@ void loop(void) {
 
     //ENVIO DATO DE presion
     str="p"+String(presion); //convertimos el entero a String y agramos un inicio de trama
+    Serial.println("presion"+ str);
     str.toCharArray(buf,sizeof(buf)); //convertimos el String en un array
     vw_send((uint8_t *)buf, strlen(buf)); //Enviamos el array
     vw_wait_tx(); //Esperamos hasta que el mensaje se envie
@@ -126,6 +130,6 @@ void loop(void) {
     str="H"+String(humedad); //convertimos el entero a String y agramos un inicio de trama
     str.toCharArray(buf,sizeof(buf)); //convertimos el String en un array
     vw_send((uint8_t *)buf, strlen(buf)); //Enviamos el array
-    vw_wait_tx(); //Esperamos hasta que el mensaje se envie*/
+    vw_wait_tx(); //Esperamos hasta que el mensaje se envie
 
 }//lop fin
